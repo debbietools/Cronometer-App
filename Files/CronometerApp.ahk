@@ -1,5 +1,5 @@
 ﻿#persistent
-#singleinstance force
+#SingleInstance, Force
 #NoEnv
 #NoTrayIcon
 SendMode, Input
@@ -11,12 +11,16 @@ IniRead, CronometerHotkey4, settings.ini, settings, CronometerHotkey4
 IniRead, CronometerHotkey5, settings.ini, settings, CronometerHotkey5
 IniRead, CronometerHotkey6, settings.ini, settings, CronometerHotkey6
 IniRead, CronometerSeconds, settings.ini, settings, CronometerSeconds, 2
+IniRead, CronometerMessage, settings.ini, settings, CronometerMessage, Done
+IniRead, CronometerMessageDelay, settings.ini, settings, CronometerMessageDelay, 200
+IniRead, CronometerMessageColor1, settings.ini, settings, CronometerMessageColor1, Green
+IniRead, CronometerMessageColor2, settings.ini, settings, CronometerMessageColor2, Red
 ; Example: On-screen display (OSD) via transparent window:
 CustomColor = EEAA99    ; Can be any RGB color (it will be made transparent below).
 Gui +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
 Gui, Color, %CustomColor%
 Gui, Font, s40  ; Set a large font size (32-point).
-Gui, Add, Text, vMyText w1500 clime Center  ; XX & YY serve to auto-size the window.
+Gui, Add, Text, vMyText w1500 c%CronometerMessageColor1% Center  ; XX & YY serve to auto-size the window.
 ; Make all pixels of this color transparent and make the text itself translucent (150):
 WinSet, TransColor, %CustomColor% 255
 if (CronometerHotkey1 = "")
@@ -54,7 +58,7 @@ Hotkey,%CronometerHotkey6%,Remap6
 
 
 SetTimer, bumpclock, 100
-Gui, Font, cFF0000
+Gui, Font, c%CronometerMessageColor2%
 Gui, Show, NoActivate  ; NoActivate avoids deactivating the currently active window.
 return
 
@@ -68,8 +72,8 @@ bumpclock:
     GuiControl, Font, MyText
   if second >= %CronometerSeconds%
   {
-    GuiControl,, MyText, Done
-    Sleep, 100
+    GuiControl,, MyText, %CronometerMessage%
+    Sleep, %CronometerMessageDelay%
     SetTimer, bumpclock, off
     GuiControl, Hide, MyText
     
