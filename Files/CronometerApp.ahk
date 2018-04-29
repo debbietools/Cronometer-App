@@ -54,7 +54,8 @@ Hotkey,%CronometerHotkey6%,Remap6
 
 
 SetTimer, bumpclock, 100
-Gui, Show , NoActivate  ; NoActivate avoids deactivating the currently active window.
+Gui, Font, cFF0000
+Gui, Show, NoActivate  ; NoActivate avoids deactivating the currently active window.
 return
 
 bumpclock:
@@ -64,10 +65,14 @@ bumpclock:
   {
     milisecond = 0
     second++
+    GuiControl, Font, MyText
   if second >= %CronometerSeconds%
   {
+    GuiControl,, MyText, Done
+    Sleep, 100
     SetTimer, bumpclock, off
     GuiControl, Hide, MyText
+    
 
   }
 }
